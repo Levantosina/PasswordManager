@@ -34,8 +34,9 @@ public class AuthenticationService {
         UserEntity userEntity = ownUserDetails.getUserEntity();
 
         String role = userEntity.getRole();
+        Long userId = userEntity.getUserId();
 
-        String token = jwtUtil.issueToken(userEntity.getUserName(), role);
+        String token = jwtUtil.issueToken(userEntity.getUserName(),userId, role);
 
         return new AuthenticationResponse(token);
     }
