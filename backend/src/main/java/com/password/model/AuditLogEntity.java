@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "audit_log_entity")
 public class AuditLogEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +27,6 @@ public class AuditLogEntity {
     @ManyToOne
     @JoinColumn(name = "password_id")
     private PasswordEntity password;
+    @Column(name="deleted")
+    private boolean deleted = false;
 }
