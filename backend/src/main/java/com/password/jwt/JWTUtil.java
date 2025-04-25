@@ -14,9 +14,10 @@ public class JWTUtil {
 
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String issueToken(String username, String role) {
+    public String issueToken(String username, Long id,String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("id",id)
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) //1day
@@ -30,8 +31,18 @@ public class JWTUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("role", String.class);
+                .getSubject();
     }
+
+    public Long extractId(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("id", Long.class);
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
