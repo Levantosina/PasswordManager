@@ -23,7 +23,6 @@ public class PasswordController {
     @GetMapping("/user/get")
     public List<PasswordDTO> getAllPasswordsByUser() {
         try {
-            Long userId = extractUserIdFromContext.extractUserIdFromContext();
             return passwordService.getAllPasswordByUser();
         } catch (AccessDeniedException e) {
             throw new RuntimeException(e);

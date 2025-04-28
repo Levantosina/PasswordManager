@@ -33,12 +33,6 @@ public class UserService {
     private final PasswordRepository passwordRepository;
     private final AuditLogRepository auditLogRepository;
 
-//    public List<UserDTO> getAllUsers(){
-//        return userRepository.findAll()
-//                .stream()
-//                .map(userDTOMapper)
-//                .collect(Collectors.toList());
-//    }
 
     public void createUser(UserRegistrationRequest userRegistrationRequest) {
         if (userRepository.existsByUserName(userRegistrationRequest.username())) {

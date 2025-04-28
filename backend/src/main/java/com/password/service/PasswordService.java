@@ -63,23 +63,20 @@ public class PasswordService {
     public void updatePasswordSection(PasswordUpdateRequest updateRequest) throws AccessDeniedException {
         Long userId = extractUserIdFromContext.extractUserIdFromContext();
 
-        // Извлекаем пользователя
+
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
-        // Ищем пароль для указанного сервиса, исключая удаленные записи
+
         PasswordEntity password = passwordRepository
                 .findByUserAndServiceNameAndDeletedFalse(user, updateRequest.serviceName())
                 .orElseThrow(() -> new RuntimeException("Password for service not found"));
 
-        // Обновляем данные
         password.setEncryptedPassword(passwordEncoder.encode(updateRequest.newPassword()));
         password.setServiceName(updateRequest.newServiceName());
 
-        // Сохраняем обновленный пароль
         passwordRepository.save(password);
 
-        // Логируем действие
         auditLogService.logAction("UPDATED_PASSWORD", user, password);
     }
 

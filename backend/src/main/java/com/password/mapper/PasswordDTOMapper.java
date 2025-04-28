@@ -11,6 +11,7 @@ public class PasswordDTOMapper implements Function<PasswordEntity,PasswordDTO> {
     @Override
     public PasswordDTO apply(PasswordEntity passwordEntity) {
         return new PasswordDTO(
+                passwordEntity.getPasswordId(),
                 passwordEntity.getServiceName(),
                 passwordEntity.getEncryptedPassword()
         );
